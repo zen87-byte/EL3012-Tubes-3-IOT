@@ -1,101 +1,178 @@
+"use client";
+import { useState, useEffect } from "react";
+import { database, ref, onValue, set } from "@/lib/firebase";
 import Image from "next/image";
+import { toast, ToastContainer } from "react-toastify";
+
+type SensorData = {
+  temperature: number;
+  humidity: number;
+  distance: number;
+  relayStatus: boolean;
+  led1Status: boolean;
+  led2Status: boolean;
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [sensorData, setSensorData] = useState<SensorData | null>(null);
+  const [relayStatus, setRelayStatus] = useState<boolean>(false);
+  const [LED1Status, setLED1Status] = useState<boolean>(false);
+  const [LED2Status, setLED2Status] = useState<boolean>(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Mengambil data dari Firebase secara real-time
+  useEffect(() => {
+    const sensorRef = ref(database, "tubes3");
+
+    onValue(sensorRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setSensorData({
+          temperature: data.temperature || 0,
+          humidity: data.humidity || 0,
+          distance: data.distance || 0,
+          relayStatus: data.relayStatus || false,
+          led1Status: data.led1Status || false,
+          led2Status: data.led2Status || false,
+        });
+
+        // Update relayStatus berdasarkan data dari Firebase
+        setRelayStatus(data.relayStatus || false);
+        setLED1Status(data.led1Status || false);
+        setLED2Status(data.led2Status || false);
+      }
+    });
+  }, []);
+
+  // Menangani toggle status relay
+  const handleToggleRelay = async () => {
+    const newStatus = !relayStatus;
+    setRelayStatus(newStatus);
+
+    // Update status relay ke Firebase
+    try {
+      await set(ref(database, "tubes3/relayStatus"), newStatus);
+      console.log(`Relay status updated to: ${newStatus ? "ON" : "OFF"}`);
+    } catch (error) {
+      console.error("Failed to update relay status:", error);
+    }
+  };
+
+  // Menangani toggle status LED1
+  const handleToggleLED1 = async () => {
+    const newStatus = !LED1Status;
+
+    try {
+      // Update status LED1 ke Firebase
+      await set(ref(database, "tubes3/led1Status"), newStatus);
+      console.log(`LED 1 updated to: ${newStatus ? "ON" : "OFF"}`);
+      setLED1Status(newStatus); // Update status di UI hanya jika berhasil
+    } catch (error) {
+      console.error("Failed to update LED 1 status:", error);
+    }
+  };
+
+  // Menangani toggle status LED2
+  const handleToggleLED2 = async () => {
+    const newStatus = !LED2Status;
+
+    try {
+      // Update status LED2 ke Firebase
+      await set(ref(database, "tubes3/led2Status"), newStatus);
+      console.log(`LED 2 updated to: ${newStatus ? "ON" : "OFF"}`);
+      setLED2Status(newStatus); // Update status di UI hanya jika berhasil
+    } catch (error) {
+      console.error("Failed to update LED 2 status:", error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center w-full">
+      <nav className="mt-4 px-5 py-2 flex items-center justify-between w-full text-black">
+        <div className="greeting flex flex-col">
+          <p className="text-xl font-semibold">EL3012-IOT</p>
+          <p className="text-sm">13222002 - 13222008</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
+          className="menu-icon space-y-1 cursor-pointer"
+          onClick={() => console.log("Menu clicked")}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <span className="block h-0.5 w-6 bg-black"></span>
+          <span className="block h-0.5 w-6 bg-black"></span>
+          <span className="block h-0.5 w-6 bg-black"></span>
+        </div>
+      </nav>
+
+      <div className="flex flex-col items-center gap-10 lg:gap-20 mt-16 w-full">
+        <div className="temperature-container flex flex-col items-center justify-center w-64 h-64 rounded-full shadow-lg bg-black text-white">
+          <p className="text-5xl flex">
+            <span id="temperature">{sensorData?.temperature}</span>
+            <span className="ml-1">&deg;C</span>
+          </p>
+          <p className="text-md sm:text-md mt-2">
+            <span className="font-medium">Humidity:</span>
+            <span className="ml-2" id="humidity">
+              {sensorData?.humidity}
+            </span>
+            <span className="ml-1">%</span>
+          </p>
+          <p className="text-md sm:text-4xl flex">
+            <span id="temperature">{sensorData?.distance}</span>
+            <span className="ml-1">cm</span>
+          </p>
+        </div>
+        <div className="w-full space-y-4 p-4">
+          <div className="title flex justify-between items-center p-3 rounded-lg border border-white shadow-lg w-full bg-white">
+            <div className="name">
+              <p className="text-md font-medium text-black">Fan</p>
+            </div>
+            <div className="tombol">
+              <button
+                id="tombol"
+                onClick={handleToggleRelay}
+                className={`w-12 h-6 text-sm rounded-full ${
+                  relayStatus ? "bg-black" : "bg-gray-700"
+                } text-white focus:outline-none transition-colors duration-300 ease-in-out`}
+              >
+                {relayStatus ? "ON" : "OFF"}
+              </button>
+            </div>
+          </div>
+
+          <div className="title flex justify-between items-center p-3 rounded-lg border border-white shadow-lg w-full bg-white">
+            <div className="name">
+              <p className="text-md font-medium text-black">LED 1</p>
+            </div>
+            <div className="tombol">
+              <button
+                id="tombol"
+                onClick={handleToggleLED1}
+                className={`w-12 h-6 text-sm rounded-full ${
+                  relayStatus ? "bg-black" : "bg-gray-700"
+                } text-white focus:outline-none transition-colors duration-300 ease-in-out`}
+              >
+                {LED1Status ? "ON" : "OFF"}
+              </button>
+            </div>
+          </div>
+
+          <div className="title flex justify-between items-center p-3 rounded-lg border border-white shadow-lg w-full bg-white">
+            <div className="name">
+              <p className="text-md font-medium text-black">LED 2</p>
+            </div>
+            <div className="tombol">
+              <button
+                id="tombol"
+                onClick={handleToggleLED2}
+                className={`w-12 h-6 text-sm rounded-full ${
+                  relayStatus ? "bg-black" : "bg-gray-700"
+                } text-white focus:outline-none transition-colors duration-300 ease-in-out`}
+              >
+                {LED2Status ? "ON" : "OFF"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
