@@ -12,6 +12,13 @@ Realtime database:
 ## Deskripsi Proyek
 Proyek ini merupakan tugas besar 3 mata kuliah EL3012 - Sistem Mikroprosesor. Proyek ini merupakan aplikasi IOT (Internet of Things) yang bertujuan untuk melakukan komunikasi dengan ESP32 melalui website. Data dari sensor ESP32 disimpan dan diperbarui secara realtime menggunakan firebase database. Kode ESP32 yang digunakan dapat dilihat pada link berikut: [EL3012-Tubes-3-ESP32](https://github.com/zen87-byte/EL3012-Tubes-3-ESP32) 
 
+## Fitur:
+1. Data
+2. Kelembaban
+3. Distance
+4. Kontrol Fan 12V menggunakan relay
+5. Kontrol LED
+
 ## Teknologi yang digunakan
 1. Next JS: Framework untuk pengembangan aplikasi website
 2. Firebase by Google: Backend-as-a-Service (SaaS) untuk komunikasi secara realtime
