@@ -42,5 +42,5 @@ Proyek ini merupakan tugas besar 3 mata kuliah EL3012 - Sistem Mikroprosesor. Pr
    ```
    Isi variable tersebut sesuai konfigurasi pada firebase
 4. Jalankan aplikasi  
-   Gunakan perintah berikut untuk menjalankan website secara lokal.
-   ```npm run dev```
+   Gunakan perintah berikut untuk menjalankan website secara lokal di windows.
+   ```npm run dev```. Untuk menampilkan web menggunakan HP, gunakan koneksi yang sama antara windows dan HP. Masukkan alamat IP dan port ke browser HP. Alamat IP dan port dapat dilihat ketika menjalankan perintah ```npm run dev```
