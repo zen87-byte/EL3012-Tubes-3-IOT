@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+User interface:
+![IMG-20250116-WA0000](https://github.com/user-attachments/assets/d4ea465d-95aa-4506-84d7-8eb77525c3b5)
+Realtime database:
+![SmartSelect_20250117_104028_Chrome](https://github.com/user-attachments/assets/77726e90-4d58-401a-8571-463ac84b8abc)
 
-## Getting Started
+## Kontributor
+1. Riswandha mashuri (13222002)
+2. Alghoza Hamdani (13222008)
+   
+## Deskripsi Proyek
+Proyek ini merupakan tugas besar 3 mata kuliah EL3012 - Sistem Mikroprosesor. Proyek ini merupakan aplikasi IOT (Internet of Things) yang bertujuan untuk melakukan komunikasi dengan ESP32 melalui website. Data dari sensor ESP32 disimpan dan diperbarui secara realtime menggunakan firebase database. Kode ESP32 yang digunakan dapat dilihat pada link berikut: [EL3012-Tubes-3-ESP32](https://github.com/zen87-byte/EL3012-Tubes-3-ESP32) 
 
-First, run the development server:
+## Teknologi yang digunakan
+1. Next JS: Framework untuk pengembangan aplikasi website
+2. Firebase by Google: Backend-as-a-Service (SaaS) untuk komunikasi secara realtime
+3. Tailwind CSS: Styling yang cepat dan responsif
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Cara Menjalankan Proyek
+1. Clone repository
+   Clone proyek ini ke komputer `https://github.com/zen87-byte/EL3012-Tubes-3-IOT.git` atau download repository ini
+2. Install dependencies
+   Pastikan sudah menginstall package manager. Masuk ke folder proyek ini dan buka terminal untuk install dependencies yang diperlukan menggunakan `npm install`.
+3. Setup Firebase Configuration
+   Tambahkan file `.env.local` dan buat variable di dalam file tersebut sesuai template berikut.
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY=
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+   NEXT_PUBLIC_FIREBASE_DATABASE_URL=
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+   NEXT_PUBLIC-FIREBASE_MESSAGING_SENDER_ID=
+   NEXT_PUBLIC_FIREBASE_APP_ID=
+   ```
+   Isi variable tersebut sesuai konfigurasi pada firebase
+4. Jalankan aplikasi
+   Gunakan perintah berikut untuk menjalankan website secara lokal.
+   ```npm run dev```
