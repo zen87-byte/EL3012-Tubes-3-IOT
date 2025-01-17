@@ -21,7 +21,7 @@ Proyek ini merupakan tugas besar 3 mata kuliah EL3012 - Sistem Mikroprosesor. Pr
 
 ## Teknologi yang digunakan
 1. Next JS: Framework untuk pengembangan aplikasi website
-2. Firebase by Google: Backend-as-a-Service (SaaS) untuk komunikasi secara realtime
+2. Firebase by Google: Backend Software-as-a-Service (SaaS) untuk komunikasi secara realtime
 3. Tailwind CSS: Styling yang cepat dan responsif
 
 ## Cara Menjalankan Proyek
